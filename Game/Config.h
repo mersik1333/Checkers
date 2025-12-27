@@ -7,24 +7,28 @@ using json = nlohmann::json;
 
 class Config
 {
-  public:
+public:
     Config()
     {
         reload();
     }
 
+    // Функция reload() перечитывает файл настроек settings.json и полностью перезагружает объект config.
+
     void reload()
     {
         std::ifstream fin(project_path + "settings.json");
-        fin >> config;
+        fin >> config;   // Загружает JSON из файла в объект config
         fin.close();
     }
 
-    auto operator()(const string &setting_dir, const string &setting_name) const
+    // Оператор круглых скобок позволяет обращаться к настройкам в удобной форме: config("категория", "имя_параметра").
+    // По сути, это сокращение для config[setting_dir][setting_name].
+    auto operator()(const string& setting_dir, const string& setting_name) const
     {
         return config[setting_dir][setting_name];
     }
 
-  private:
+private:
     json config;
 };
